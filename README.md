@@ -9,7 +9,7 @@ A simple [Squirrel](https://github.com/Squirrel) update server.
  * Provides Mac OS updates
  * Supports multiple applications
  * Supports multiple storage providers (Amazon, Azure, Github, Openstack)
- 
+
 ## How to use
 
 Neutron is a simple web server providing an API for Squirrel to find application updates. You can start it using:
@@ -25,7 +25,7 @@ npm start
 
 ```
 docker build -t neutron .
-docker run --rm --name=neutron neutron
+docker run --rm --name=neutron -v $pwd/updates:/app/updates -p 8080:8080 neutron
 ```
 
 ## How to configure
@@ -64,7 +64,7 @@ Configuring neutron is done through environment variables only:
 | NEUTRON_STORAGE_AMAZON_REGION | Microsoft Azure account key  | `us-west-2` |
 
 ### Github storage                                                                
-                                                                                  
+
 | Variable name                 | Description                                                                                                    | Default |    
 |-------------------------------|----------------------------------------------------------------------------------------------------------------|---------|    
 | NEUTRON_STORAGE_GITHUB_TOKEN        | Github [personal token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) | `null`  |    
@@ -120,10 +120,10 @@ In each version folder there **must** be:
 ### Azure storage
 
 When using Microsoft Azure storage, updates are stored as plain folders and file inside containers of the account (`NEUTRON_STORAGE_AZURE_ACCOUNT`).
-Each application **must** have its own container. With our two example applications, there **must** be two containers 
+Each application **must** have its own container. With our two example applications, there **must** be two containers
 (one for each application) using the application name.
 
-Inside containers, each version **must** have its own folder. Folder names **must** be the same as the released version 
+Inside containers, each version **must** have its own folder. Folder names **must** be the same as the released version
 number and follow semver.
 
 In each version folder:
@@ -134,10 +134,10 @@ In each version folder:
 ### Amazon (S3) storage
 
 When using Amazon storage, updates are stored as plain folders and file inside buckets in the given region (`NEUTRON_STORAGE_AMAZON_REGION`).
-Each application **must** have its own bucket. With our two example applications, there **must** be two buckets 
+Each application **must** have its own bucket. With our two example applications, there **must** be two buckets
 (one for each application) using the application name.
 
-Inside buckets, each version **must** have its own folder. Folder names **must** be the same as the released version 
+Inside buckets, each version **must** have its own folder. Folder names **must** be the same as the released version
 number and follow semver.
 
 In each version folder:
@@ -191,7 +191,7 @@ and releases:
 * `POST /v1/apps/:app/releases` (where `:app` is the application name) to create an new release. This **must** be a multipart request with
   * a `file` part containing the release distribution ZIP file
   * a `data` part contaning a JSON string describing the release
-  
+
 ```json
 {
     "version": "1.0.0",

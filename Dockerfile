@@ -16,4 +16,10 @@ ENV NODE_ENV=production
 
 RUN npm install
 
+RUN mkdir updates
+
+VOLUME /app/updates
+
+EXPOSE 8080
+
 ENTRYPOINT /node-v4.1.0-linux-x64/bin/node /app/lib/index.js
